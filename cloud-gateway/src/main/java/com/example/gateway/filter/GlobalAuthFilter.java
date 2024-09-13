@@ -1,5 +1,6 @@
 package com.example.gateway.filter;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -16,14 +17,16 @@ import org.springframework.util.AntPathMatcher;
 import java.nio.charset.StandardCharsets;
 
 @Component
+@Slf4j
 public class GlobalAuthFilter implements GlobalFilter, Ordered {
 
-    private AntPathMatcher antPathMatcher = new AntPathMatcher();
+    private final AntPathMatcher antPathMatcher = new AntPathMatcher();
 
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest serverHttpRequest = exchange.getRequest();
         String path = serverHttpRequest.getURI().getPath();
+        log.info(path);
         // 判断路径中是否包含 inner，只允许内部调用
         if (antPathMatcher.match("/**/inner/**", path)) {
             ServerHttpResponse response = exchange.getResponse();
@@ -38,6 +41,7 @@ public class GlobalAuthFilter implements GlobalFilter, Ordered {
 
     /**
      * 优先级提到最高
+     *
      * @return
      */
     @Override

@@ -11,3 +11,9 @@ spring cloud alibaba
 - sentinel 熔断降级、限流
 - seata 分布式事务
 - gateway、loadbalancer API网关
+
+@EnableFeignClients 启动类中启动OpenFeign
+@FeignClient("服务名词")
+
+security＋gateway
+https://zhuanlan.zhihu.com/p/521588666
